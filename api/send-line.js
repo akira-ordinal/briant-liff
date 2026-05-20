@@ -1,9 +1,5 @@
 // api/send-line.js
-// Vercel Serverless Function
-// LINE Messaging API でユーザーのトーク画面に診断結果を送信する
-
-export default async function handler(req, res) {
-  // CORS ヘッダー（GitHub Pages など別オリジンからの呼び出しを許可）
+const handler = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -22,12 +18,10 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'LINE token not configured' });
   }
 
-  // ラベル変換
   const lifestyleLabels = ['デスクワーク中心', '立ち仕事中心', '家事・育児で動き回っている'];
   const worryLabels = ['太もものセルライト・横の張り', '冷えが酷く、何をしても温まらない', '全体は痩せたのに脚だけ残っている'];
   const stressLabels = ['穏やか', '低い', '普通', '高い', '限界'];
 
-  // LINEに送るメッセージ（Flex Message でリッチに表示）
   const flexMessage = {
     type: 'flex',
     altText: '🔮 あなたの脚やせ診断結果が届きました',
@@ -38,21 +32,8 @@ export default async function handler(req, res) {
         type: 'box',
         layout: 'vertical',
         contents: [
-          {
-            type: 'text',
-            text: '🔮 10年後の未来予測',
-            weight: 'bold',
-            size: 'sm',
-            color: '#e5c98e'
-          },
-          {
-            type: 'text',
-            text: '脚やせAI診断結果',
-            weight: 'bold',
-            size: 'xl',
-            color: '#ffffff',
-            margin: 'sm'
-          }
+          { type: 'text', text: '🔮 10年後の未来予測', weight: 'bold', size: 'sm', color: '#e5c98e' },
+          { type: 'text', text: '脚やせAI診断結果', weight: 'bold', size: 'xl', color: '#ffffff', margin: 'sm' }
         ],
         backgroundColor: '#1a2a40',
         paddingAll: '20px'
@@ -61,18 +42,11 @@ export default async function handler(req, res) {
         type: 'box',
         layout: 'vertical',
         contents: [
-          // 診断条件サマリー
           {
             type: 'box',
             layout: 'vertical',
             contents: [
-              {
-                type: 'text',
-                text: '📋 診断条件',
-                size: 'xs',
-                color: '#888888',
-                weight: 'bold'
-              },
+              { type: 'text', text: '📋 診断条件', size: 'xs', color: '#888888', weight: 'bold' },
               {
                 type: 'box',
                 layout: 'vertical',
@@ -89,49 +63,16 @@ export default async function handler(req, res) {
             paddingAll: '14px',
             margin: 'none'
           },
-          // 区切り
           { type: 'separator', margin: 'lg', color: '#e1d4bc' },
-          // 未来予測
-          {
-            type: 'text',
-            text: '✨ 未来予測',
-            size: 'xs',
-            color: '#b5945d',
-            weight: 'bold',
-            margin: 'lg'
-          },
-          {
-            type: 'text',
-            text: vision,
-            size: 'sm',
-            color: '#3d2e1f',
-            wrap: true,
-            margin: 'sm',
-            lineSpacing: '6px'
-          },
-          // 区切り
+          { type: 'text', text: '✨ 未来予測', size: 'xs', color: '#b5945d', weight: 'bold', margin: 'lg' },
+          { type: 'text', text: vision, size: 'sm', color: '#3d2e1f', wrap: true, margin: 'sm' },
           { type: 'separator', margin: 'lg', color: '#e1d4bc' },
-          // カウンセラーメッセージ
-          {
-            type: 'text',
-            text: '💬 カウンセラーより',
-            size: 'xs',
-            color: '#888888',
-            weight: 'bold',
-            margin: 'lg'
-          },
+          { type: 'text', text: '💬 カウンセラーより', size: 'xs', color: '#888888', weight: 'bold', margin: 'lg' },
           {
             type: 'box',
             layout: 'vertical',
             contents: [
-              {
-                type: 'text',
-                text: message,
-                size: 'sm',
-                color: '#ffffff',
-                wrap: true,
-                lineSpacing: '6px'
-              }
+              { type: 'text', text: message, size: 'sm', color: '#ffffff', wrap: true }
             ],
             backgroundColor: '#1a2a40',
             cornerRadius: '10px',
@@ -157,14 +98,7 @@ export default async function handler(req, res) {
             color: '#b5945d',
             height: 'md'
           },
-          {
-            type: 'text',
-            text: '© P.U SERVICE CO.,LTD.',
-            size: 'xxs',
-            color: '#bbbbbb',
-            align: 'center',
-            margin: 'md'
-          }
+          { type: 'text', text: '© P.U SERVICE CO.,LTD.', size: 'xxs', color: '#bbbbbb', align: 'center', margin: 'md' }
         ],
         paddingAll: '16px',
         backgroundColor: '#fdfbf7'
@@ -179,10 +113,7 @@ export default async function handler(req, res) {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${channelAccessToken}`
       },
-      body: JSON.stringify({
-        to: userId,
-        messages: [flexMessage]
-      })
+      body: JSON.stringify({ to: userId, messages: [flexMessage] })
     });
 
     if (!lineRes.ok) {
@@ -196,4 +127,6 @@ export default async function handler(req, res) {
     console.error('Server error:', err);
     return res.status(500).json({ error: 'Server error' });
   }
-}
+};
+
+module.exports = handler;
