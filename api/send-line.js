@@ -22,26 +22,73 @@ const handler = async (req, res) => {
   const worryLabels = ['太もものセルライト・横の張り', '冷えが酷く、何をしても温まらない', '全体は痩せたのに脚だけ残っている'];
   const stressLabels = ['穏やか', '低い', '普通', '高い', '限界'];
 
+  const characterNames = {
+    "0-0-1": "Dreaming Bunny", "0-0-2": "Fluffy Bunny",     "0-0-3": "Cloudy Bunny",
+    "0-0-4": "Rainy Bunny",    "0-0-5": "Thunder Bunny",
+    "0-1-1": "Cozy Bunny",     "0-1-2": "Warm Bunny",       "0-1-3": "Chilly Bunny",
+    "0-1-4": "Frozen Bunny",   "0-1-5": "Blizzard Bunny",
+    "0-2-1": "Balance Bunny",  "0-2-2": "Star Bunny",       "0-2-3": "Ribbon Bunny",
+    "0-2-4": "Cloudy Star Bunny", "0-2-5": "Miracle Bunny",
+    "1-0-1": "Sunny Cat",      "1-0-2": "Graceful Cat",     "1-0-3": "Tired Cat",
+    "1-0-4": "Weary Cat",      "1-0-5": "Storm Cat",
+    "1-1-1": "Warm Cat",       "1-1-2": "Cozy Cat",         "1-1-3": "Chilly Cat",
+    "1-1-4": "Cold Cat",       "1-1-5": "Frozen Cat",
+    "1-2-1": "Balance Cat",    "1-2-2": "Starlight Cat",    "1-2-3": "Mooncat",
+    "1-2-4": "Cloudy Cat",     "1-2-5": "Midnight Cat",
+    "2-0-1": "Happy Bear",     "2-0-2": "Gentle Bear",      "2-0-3": "Busy Bear",
+    "2-0-4": "Tired Mama Bear","2-0-5": "Exhausted Bear",
+    "2-1-1": "Warm Mama Bear", "2-1-2": "Cozy Bear",        "2-1-3": "Chilly Bear",
+    "2-1-4": "Cold Mama Bear", "2-1-5": "Frozen Bear",
+    "2-2-1": "Balance Bear",   "2-2-2": "Star Mama Bear",   "2-2-3": "Ribbon Bear",
+    "2-2-4": "Cloudy Bear",    "2-2-5": "Miracle Bear",
+  };
+
+  const key = `${lifestyle}-${worry}-${stress}`;
+  const charName = characterNames[key] || '';
+  const charImageUrl = `https://raw.githubusercontent.com/akira-ordinal/briant-liff/main/images/${key}.png`;
+
   const flexMessage = {
     type: 'flex',
-    altText: '🔮 あなたの脚やせ診断結果が届きました',
+    altText: `🔮 ${charName} タイプ — あなたの脚やせ診断結果が届きました`,
     contents: {
       type: 'bubble',
       size: 'giga',
+      // ヒーロー：キャラクター画像
+      hero: {
+        type: 'image',
+        url: charImageUrl,
+        size: 'full',
+        aspectRatio: '1:1',
+        aspectMode: 'cover',
+        backgroundColor: '#f7f3ec',
+      },
       header: {
         type: 'box',
         layout: 'vertical',
         contents: [
-          { type: 'text', text: '🔮 10年後の未来予測', weight: 'bold', size: 'sm', color: '#e5c98e' },
-          { type: 'text', text: '脚やせAI診断結果', weight: 'bold', size: 'xl', color: '#ffffff', margin: 'sm' }
+          {
+            type: 'text',
+            text: `${charName} タイプ`,
+            weight: 'bold',
+            size: 'lg',
+            color: '#e5c98e',
+          },
+          {
+            type: 'text',
+            text: '🔮 10年後の未来予測',
+            size: 'sm',
+            color: '#aabbd0',
+            margin: 'sm',
+          }
         ],
         backgroundColor: '#1a2a40',
-        paddingAll: '20px'
+        paddingAll: '20px',
       },
       body: {
         type: 'box',
         layout: 'vertical',
         contents: [
+          // 診断条件
           {
             type: 'box',
             layout: 'vertical',
@@ -61,12 +108,13 @@ const handler = async (req, res) => {
             backgroundColor: '#f7f3ec',
             cornerRadius: '10px',
             paddingAll: '14px',
-            margin: 'none'
           },
           { type: 'separator', margin: 'lg', color: '#e1d4bc' },
+          // 未来予測
           { type: 'text', text: '✨ 未来予測', size: 'xs', color: '#b5945d', weight: 'bold', margin: 'lg' },
           { type: 'text', text: vision, size: 'sm', color: '#3d2e1f', wrap: true, margin: 'sm' },
           { type: 'separator', margin: 'lg', color: '#e1d4bc' },
+          // カウンセラーメッセージ
           { type: 'text', text: '💬 カウンセラーより', size: 'xs', color: '#888888', weight: 'bold', margin: 'lg' },
           {
             type: 'box',
