@@ -87,6 +87,7 @@ input[type=range] { width: 100%; accent-color: #b5945d; }
 .result { width: 100%; animation: fadeIn 0.5s ease; }
 @keyframes fadeIn { from { opacity:0; transform: translateY(8px); } to { opacity:1; transform: translateY(0); } }
 .result-img { width: 100%; height: 160px; object-fit: cover; border-radius: 14px; margin-bottom: 14px; display: block; }
+.result-char { font-size: 13px; font-weight: 700; color: #1a2a40; margin-bottom: 6px; text-align: center; }
 .result-tag { font-size: 11px; font-weight: 700; color: #b5945d; margin-bottom: 10px; }
 .result-vision { background: white; border-radius: 14px; padding: 16px; border: 1px solid #e1d4bc; font-size: 13px; line-height: 1.8; color: #3d2e1f; margin-bottom: 12px; }
 .result-message { background: #1a2a40; color: white; border-radius: 12px; padding: 16px; font-size: 13px; line-height: 1.8; font-style: italic; margin-bottom: 16px; }
@@ -173,7 +174,7 @@ footer { text-align: center; padding: 32px 16px; font-size: 12px; color: #bbb; }
         <div class="chart-container">
           <canvas id="radarChart"></canvas>
         </div>
-        <p class="chart-hint">← 診断して10年後の未来を見る</p>
+        <p class="chart-hint">← 分析して10年後の未来を見る</p>
       </div>
     </div>
   </div>
@@ -183,7 +184,7 @@ footer { text-align: center; padding: 32px 16px; font-size: 12px; color: #bbb; }
 
 <script>
 // ★ 設定：あなたのLIFF IDとVercelのURLを入れてください
-const LIFF_ID = '2010104356-E9lQf4nY';                        // 例: '1234567890-AbCdEfGh'
+const LIFF_ID = '2010104356-E9IQf4nY';                        // 例: '1234567890-AbCdEfGh'
 const API_BASE = 'https://briant-liff.vercel.app';    // Vercelデプロイ後のURL
 
 const RESERVE_URL = 'https://liff.line.me/2009794603-Qd1GnsD7/landing?follow=%40364olmeq&lp=wW3XOe&liff_id=2009794603-Qd1GnsD7';
@@ -234,11 +235,33 @@ new Chart(document.getElementById('radarChart').getContext('2d'), {
   }
 });
 
-const resultImages = [
-  'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=800&q=80',
-  'https://images.unsplash.com/photo-1544367567-0f2fcb046eeb?auto=format&fit=crop&w=800&q=80',
-  'https://images.unsplash.com/photo-1552693673-1bf958298935?auto=format&fit=crop&w=800&q=80',
-];
+const GITHUB_IMAGE_BASE = 'https://raw.githubusercontent.com/akira-ordinal/briant-liff/main/images';
+
+// キャラクター名マップ
+const characterNames = {
+  "0-0-1": "Dreaming Bunny", "0-0-2": "Fluffy Bunny", "0-0-3": "Cloudy Bunny",
+  "0-0-4": "Rainy Bunny",   "0-0-5": "Thunder Bunny",
+  "0-1-1": "Cozy Bunny",    "0-1-2": "Warm Bunny",    "0-1-3": "Chilly Bunny",
+  "0-1-4": "Frozen Bunny",  "0-1-5": "Blizzard Bunny",
+  "0-2-1": "Balance Bunny", "0-2-2": "Star Bunny",    "0-2-3": "Ribbon Bunny",
+  "0-2-4": "Cloudy Star Bunny", "0-2-5": "Miracle Bunny",
+  "1-0-1": "Sunny Cat",     "1-0-2": "Graceful Cat",  "1-0-3": "Tired Cat",
+  "1-0-4": "Weary Cat",     "1-0-5": "Storm Cat",
+  "1-1-1": "Warm Cat",      "1-1-2": "Cozy Cat",      "1-1-3": "Chilly Cat",
+  "1-1-4": "Cold Cat",      "1-1-5": "Frozen Cat",
+  "1-2-1": "Balance Cat",   "1-2-2": "Starlight Cat", "1-2-3": "Mooncat",
+  "1-2-4": "Cloudy Cat",    "1-2-5": "Midnight Cat",
+  "2-0-1": "Happy Bear",    "2-0-2": "Gentle Bear",   "2-0-3": "Busy Bear",
+  "2-0-4": "Tired Mama Bear","2-0-5": "Exhausted Bear",
+  "2-1-1": "Warm Mama Bear","2-1-2": "Cozy Bear",     "2-1-3": "Chilly Bear",
+  "2-1-4": "Cold Mama Bear","2-1-5": "Frozen Bear",
+  "2-2-1": "Balance Bear",  "2-2-2": "Star Mama Bear","2-2-3": "Ribbon Bear",
+  "2-2-4": "Cloudy Bear",   "2-2-5": "Miracle Bear",
+};
+
+function getCharacterImage(key) {
+  return `${GITHUB_IMAGE_BASE}/${key}.png`;
+}
 
 const db = {
   "0-0-1":{vision:"デスクワーク中心でストレスが低い今の状態は、巡りを改善する絶好のチャンスです。座りっぱなしによる圧迫を解き放つことで、10年後もセルライトのない美しいラインを維持できます。",message:"自分を大切にできている証拠ですね。その調子で、たまには立ち上がって脚も労わってあげましょう。"},
@@ -312,7 +335,9 @@ async function diagnose() {
   const wr = parseInt(document.getElementById('worry').value);
   const st = parseInt(document.getElementById('stress').value);
   const data = db[`${ls}-${wr}-${st}`] || db["0-0-1"];
-  const imgSrc = resultImages[wr] || resultImages[0];
+  const key = `${ls}-${wr}-${st}`;
+  const imgSrc = getCharacterImage(key);
+  const charName = characterNames[key] || '';
   const panel = document.getElementById('rightPanel');
   const btn = document.getElementById('diagnoseBtn');
 
@@ -324,6 +349,7 @@ async function diagnose() {
     panel.innerHTML = `
       <div class="result">
         <img class="result-img" src="${imgSrc}" alt="診断イメージ" onerror="this.style.display='none'">
+        ${charName ? `<p class="result-char">${charName} タイプ</p>` : ''}
         <p class="result-tag">🔮 10年後の未来予測</p>
         <div class="result-vision">${data.vision}</div>
         <div class="result-message">💬 ${data.message}</div>
