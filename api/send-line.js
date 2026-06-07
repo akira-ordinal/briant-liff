@@ -53,7 +53,7 @@ const handler = async (req, res) => {
     contents: {
       type: 'bubble',
       size: 'giga',
-      // ヒーロー：キャラクター画像
+      
       hero: {
         type: 'image',
         url: charImageUrl,
@@ -88,12 +88,12 @@ const handler = async (req, res) => {
         type: 'box',
         layout: 'vertical',
         contents: [
-          // 診断条件
+          
           {
             type: 'box',
             layout: 'vertical',
             contents: [
-              { type: 'text', text: '📋 診断条件', size: 'xs', color: '#888888', weight: 'bold' },
+              { type: 'text', text: '📋 分析条件', size: 'xs', color: '#888888', weight: 'bold' },
               {
                 type: 'box',
                 layout: 'vertical',
@@ -110,11 +110,11 @@ const handler = async (req, res) => {
             paddingAll: '14px',
           },
           { type: 'separator', margin: 'lg', color: '#e1d4bc' },
-          // 未来予測
+          
           { type: 'text', text: '✨ 未来予測', size: 'xs', color: '#b5945d', weight: 'bold', margin: 'lg' },
           { type: 'text', text: vision, size: 'sm', color: '#3d2e1f', wrap: true, margin: 'sm' },
           { type: 'separator', margin: 'lg', color: '#e1d4bc' },
-          // カウンセラーメッセージ
+          
           { type: 'text', text: '💬 カウンセラーより', size: 'xs', color: '#888888', weight: 'bold', margin: 'lg' },
           {
             type: 'box',
