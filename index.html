@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<!-- ★ LIFF SDK -->
+
 <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -183,16 +183,16 @@ footer { text-align: center; padding: 32px 16px; font-size: 12px; color: #bbb; }
 <footer>© P.U SERVICE CO.,LTD. ALL RIGHTS RESERVED.</footer>
 
 <script>
-// ★ 設定：あなたのLIFF IDとVercelのURLを入れてください
-const LIFF_ID = '2010104356-E9lQf4nY';                        // 例: '1234567890-AbCdEfGh'
-const API_BASE = 'https://briant-liff.vercel.app';    // Vercelデプロイ後のURL
+
+const LIFF_ID = '2010104356-E9lQf4nY';                        
+const API_BASE = 'https://briant-liff.vercel.app';    
 
 const RESERVE_URL = 'https://liff.line.me/2009794603-Qd1GnsD7/landing?follow=%40364olmeq&lp=wW3XOe&liff_id=2009794603-Qd1GnsD7';
 
-// LIFFで取得したuserIdを保持
+
 let lineUserId = null;
 
-// ── LIFF 初期化 ──────────────────────────────
+
 async function initLiff() {
   try {
     await liff.init({ liffId: LIFF_ID });
@@ -201,24 +201,24 @@ async function initLiff() {
       lineUserId = profile.userId;
       console.log('LIFF initialized. userId:', lineUserId);
     } else {
-      // LINEアプリ外（ブラウザ）で開いた場合はログインを促す
+      
       liff.login();
     }
   } catch (e) {
     console.warn('LIFF init failed (preview mode?):', e);
-    // LIFF外での動作確認用にnullのまま続行
+    
   }
 }
 
 initLiff();
 
-// ── ストレスラベル更新 ──────────────────────────
+
 const stressLabels = ["穏やか", "低い", "普通", "高い", "限界"];
 function updateStress() {
   document.getElementById('stressLabel').textContent = stressLabels[document.getElementById('stress').value - 1];
 }
 
-// ── レーダーチャート ──────────────────────────
+
 new Chart(document.getElementById('radarChart').getContext('2d'), {
   type: 'radar',
   data: {
@@ -237,7 +237,7 @@ new Chart(document.getElementById('radarChart').getContext('2d'), {
 
 const GITHUB_IMAGE_BASE = 'https://raw.githubusercontent.com/akira-ordinal/briant-liff/main/images';
 
-// キャラクター名マップ
+
 const characterNames = {
   "0-0-1": "Dreaming Bunny", "0-0-2": "Fluffy Bunny", "0-0-3": "Cloudy Bunny",
   "0-0-4": "Rainy Bunny",   "0-0-5": "Thunder Bunny",
@@ -311,7 +311,7 @@ const db = {
   "2-2-5":{vision:"心身の限界からくる無意識の極度の力みが、脚を硬い鎧のように太く残しています。すべてを休めて体を安心させてあげることで、10年後は本来の美しいあなた自身の脚に近づけるでしょう。",message:"限界まで頑張るお母さん、本当にお疲れ様です。今は結果を焦らず、ただただ自分を甘やかして大切にする日を作ってください。"}
 };
 
-// ── LINE Messaging API で診断結果を送信 ────────────
+
 async function sendToLine(userId, resultData, ls, wr, st) {
   const res = await fetch(`${API_BASE}/api/send-line`, {
     method: 'POST',
@@ -329,7 +329,7 @@ async function sendToLine(userId, resultData, ls, wr, st) {
   return res.json();
 }
 
-// ── 診断メイン ────────────────────────────────────
+
 async function diagnose() {
   const ls = parseInt(document.getElementById('lifestyle').value);
   const wr = parseInt(document.getElementById('worry').value);
@@ -344,7 +344,7 @@ async function diagnose() {
   btn.disabled = true;
   panel.innerHTML = '<div class="loader"><div class="spinner"></div><span>🔮 解析中...</span></div>';
 
-  // 1.4秒後に結果を表示し、同時にLINE送信
+  
   setTimeout(async () => {
     panel.innerHTML = `
       <div class="result">
@@ -365,7 +365,7 @@ async function diagnose() {
 
     btn.disabled = false;
 
-    // LINE送信
+    
     if (lineUserId) {
       try {
         await sendToLine(lineUserId, data, ls, wr, st);
@@ -377,7 +377,7 @@ async function diagnose() {
         document.getElementById('lineStatus').innerHTML = '⚠️ LINE送信に失敗しました。再度お試しください。';
       }
     } else {
-      // LIFF外（ブラウザプレビュー）ではLINE送信をスキップ
+      
       document.getElementById('lineStatus').className = 'line-status';
       document.getElementById('lineStatus').innerHTML = '💡 LINEアプリから開くとトークに結果が届きます';
     }
