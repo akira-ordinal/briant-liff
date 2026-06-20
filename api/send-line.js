@@ -23,7 +23,7 @@ const handler = async (req, res) => {
   const stressLabels = ['穏やか', '低い', '普通', '高い', '限界'];
 
   const characterNames = {
-    "0-0-1": "Dreaming Bunny", "0-0-2": "Fluffy Bunny",     "0-0-3": "Cloudy Bunny",
+    "0-0-1": "test", "0-0-2": "Fluffy Bunny",     "0-0-3": "Cloudy Bunny",
     "0-0-4": "Rainy Bunny",    "0-0-5": "Thunder Bunny",
     "0-1-1": "Cozy Bunny",     "0-1-2": "Warm Bunny",       "0-1-3": "Chilly Bunny",
     "0-1-4": "Frozen Bunny",   "0-1-5": "Blizzard Bunny",
