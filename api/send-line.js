@@ -58,7 +58,7 @@ const handler = async (req, res) => {
         type: 'image',
         url: charImageUrl,
         size: 'full',
-        aspectRatio: '20:9',
+        aspectRatio: '1:1',
         aspectMode: 'cover',
         backgroundColor: '#f7f3ec',
       },
