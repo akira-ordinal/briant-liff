@@ -49,7 +49,7 @@ const handler = async (req, res) => {
 
   const flexMessage = {
     type: 'flex',
-    altText: `🔮 ${charName} タイプ — あなたの脚やせ診断結果が届きました`,
+    altText: `🔮 ${charName} タイプ — あなたの未来の脚チェック結果が届きました`,
     contents: {
       type: 'bubble',
       size: 'giga',
